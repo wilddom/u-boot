@@ -222,8 +222,6 @@ static int vf_usb_of_to_plat(struct udevice *dev)
 	int node = dev_of_offset(dev);
 	const char *mode;
 
-	priv->portnr = dev_seq(dev);
-
 	priv->ehci = dev_read_addr_ptr(dev);
 	mode = fdt_getprop(dt_blob, node, "dr_mode", NULL);
 	if (mode) {
@@ -316,6 +314,8 @@ static int ehci_usb_probe(struct udevice *dev)
 	struct ehci_hccr *hccr;
 	struct ehci_hcor *hcor;
 	int ret;
+
+	priv->portnr = dev_seq(dev);
 
 	ret = ehci_vf_common_init(ehci, priv->portnr);
 	if (ret)
